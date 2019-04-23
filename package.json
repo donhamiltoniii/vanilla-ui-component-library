@@ -1,0 +1,22 @@
+{
+  "name": "vanilla-ui-component-library",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/donhamiltoniii/vanilla-ui-component-library.git"
+  },
+  "author": "Don Hamilton III <donhamiltoniii@gmail.com> (https://donhamiltoniii.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/donhamiltoniii/vanilla-ui-component-library/issues"
+  },
+  "homepage": "https://github.com/donhamiltoniii/vanilla-ui-component-library#readme",
+  "dependencies": {
+    "parcel": "^1.12.3"
+  }
+}
