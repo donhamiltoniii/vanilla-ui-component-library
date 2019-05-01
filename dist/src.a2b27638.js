@@ -123,72 +123,51 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.render = exports.createHtmlElement = void 0;
-
-var createHtmlElement = function createHtmlElement() {
-  var tag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "div";
-  var attributes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var content = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "default";
-  var events = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-  var element = document.createElement(tag);
-  Object.keys(attributes).forEach(function (attribute) {
-    return element.setAttribute(attribute, attributes[attribute]);
-  });
-  Object.keys(events).forEach(function (event) {
-    return element.addEventListener(event, events[event]);
-  });
-  element.innerHTML = content;
-  return element;
-};
-
-exports.createHtmlElement = createHtmlElement;
-
-var render = function render(parentElement, childElement) {
-  parentElement.innerHTML = "";
-
-  if (!(typeof childElement.forEach === "undefined")) {
-    return childElement.forEach(function (child) {
-      return parentElement.appendChild(child);
+exports.default = void 0;
+var _default = {
+  createHtmlElement: function createHtmlElement() {
+    var tag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "div";
+    var attributes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var content = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "default";
+    var element = document.createElement(tag);
+    Object.keys(attributes).forEach(function (attribute) {
+      return element.setAttribute(attribute, attributes[attribute]);
     });
+    element.innerHTML = content;
+    return element.outerHTML;
+  },
+  render: function render(parentElement, childElement) {
+    parentElement.innerHTML = "";
+    parentElement.innerHTML = childElement;
   }
-
-  parentElement.appendChild(childElement);
 };
-
-exports.render = render;
+exports.default = _default;
 },{}],"src/index.js":[function(require,module,exports) {
 "use strict";
 
-var Dom = _interopRequireWildcard(require("./js/utils/dom"));
+var _dom = _interopRequireDefault(require("./js/utils/dom"));
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-Dom.render(document.querySelector("#app"), Dom.createHtmlElement("h1", {
-  class: "title title--light title--red"
-}, "ComponentUI", {
-  click: function click() {
-    var list = Dom.createHtmlElement("ul", {});
-    Dom.render(list, [{
-      tag: "li",
-      attributes: {},
-      content: "list item 1"
-    }, {
-      tag: "li",
-      attributes: {},
-      content: "list item 2"
-    }, {
-      tag: "li",
-      attributes: {},
-      content: "list item 3"
-    }].map(function (_ref) {
-      var tag = _ref.tag,
-          attributes = _ref.attributes,
-          content = _ref.content;
-      return Dom.createHtmlElement(tag, attributes, content);
-    }));
-    Dom.render(document.querySelector("#app"), list);
-  }
-}));
+var listItems = ["Donny", "Alan", "Lacey", "Kendra"].map(function (item) {
+  return _dom.default.createHtmlElement("li", {
+    class: "name-list__item"
+  }, item);
+}).join("");
+
+var list = _dom.default.createHtmlElement("ul", {
+  class: "name-list"
+}, listItems);
+
+var title = _dom.default.createHtmlElement("h1", {
+  class: "title"
+}, "Names");
+
+var listContent = title + list;
+
+_dom.default.render(document.querySelector("#app"), _dom.default.createHtmlElement("div", {
+  class: "container"
+}, listContent));
 },{"./js/utils/dom":"src/js/utils/dom.js"}],"node_modules/.registry.npmjs.org/parcel/1.12.3/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -217,7 +196,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50390" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54776" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
