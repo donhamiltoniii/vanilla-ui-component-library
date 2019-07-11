@@ -117,79 +117,67 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"node_modules/.registry.npmjs.org/parcel/1.12.3/node_modules/parcel/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
+})({"js/utils/Html/Html.js":[function(require,module,exports) {
+"use strict";
 
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var _default =
+/*#__PURE__*/
+function () {
+  function _default() {
+    _classCallCheck(this, _default);
   }
 
-  return bundleURL;
-}
-
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
-
-    if (matches) {
-      return getBaseURL(matches[0]);
+  _createClass(_default, [{
+    key: "isPresentElement",
+    value: function isPresentElement(element) {
+      return element === null;
     }
-  }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"node_modules/.registry.npmjs.org/parcel/1.12.3/node_modules/parcel/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
+  }, {
+    key: "selectExisting",
+    value: function selectExisting(elementString) {
+      var element = document.querySelector(elementString);
+      if (this.isPresentElement(element)) throw new Error("Requested Element doesn't exist");
+      return document.querySelector(elementString);
     }
+  }]);
 
-    cssTimeout = null;
-  }, 50);
-}
+  return _default;
+}();
 
-module.exports = reloadCSS;
-},{"./bundle-url":"node_modules/.registry.npmjs.org/parcel/1.12.3/node_modules/parcel/src/builtins/bundle-url.js"}],"src/css/index.css":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
+exports.default = _default;
+},{}],"js/index.js":[function(require,module,exports) {
+"use strict";
 
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/.registry.npmjs.org/parcel/1.12.3/node_modules/parcel/src/builtins/css-loader.js"}],"node_modules/.registry.npmjs.org/parcel/1.12.3/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+var _Html = _interopRequireDefault(require("./utils/Html/Html"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var html = new _Html.default(); // get context of thing to add html to
+
+var app = html.selectExisting('#app'); // build header element to add
+
+var header = document.createElement('header');
+header.classList.add('page-header'); // build h1 element to add
+
+var h1 = document.createElement('h1');
+h1.classList.add('page-header__title');
+h1.textContent = "Hello World"; // add 'h1' to 'header'
+
+header.append(h1); // add 'header' to app 'div'
+
+app.append(header);
+},{"./utils/Html/Html":"js/utils/Html/Html.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -217,7 +205,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54776" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51993" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -392,5 +380,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/.registry.npmjs.org/parcel/1.12.3/node_modules/parcel/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/css.dfba648a.js.map
+},{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js","js/index.js"], null)
+//# sourceMappingURL=/js.00a46daa.js.map
