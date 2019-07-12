@@ -1,12 +1,10 @@
 import Html from './utils/Html/Html'
 
-const html = new Html()
-
 // get context of thing to add html to
-const app = html.selectExisting('#app')
+const app = Html('#app').getElement()
 
 // build header element to add
-const header = html.create('header')
+const header = Html('header').getElement()
 header.classList.add('page-header')
 
 // build h1 element to add

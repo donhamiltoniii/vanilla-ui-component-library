@@ -123,7 +123,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = _default;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -131,31 +131,48 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var _default =
+function _default(query) {
+  return new Html(query);
+}
+
+var Html =
 /*#__PURE__*/
 function () {
-  function _default() {
-    _classCallCheck(this, _default);
+  function Html(query) {
+    _classCallCheck(this, Html);
+
+    if (typeof query !== 'string') throw new Error('Argument must be a string');
+    var selection = document.querySelectorAll(query);
+
+    if (selection.length === 0) {
+      if (this.isClassQuery(query) || this.isIdQuery(query)) throw new Error('Element must be a valid HTML tag');
+      this.element = document.createElement(query);
+    } else if (selection.length === 1) {
+      this.element = selection[0];
+    } else {
+      this.element = selection;
+    }
   }
 
-  _createClass(_default, [{
-    key: "isPresentElement",
-    value: function isPresentElement(element) {
-      return element === null;
+  _createClass(Html, [{
+    key: "getElement",
+    value: function getElement() {
+      return this.element;
     }
   }, {
-    key: "selectExisting",
-    value: function selectExisting(elementString) {
-      var element = document.querySelector(elementString);
-      if (this.isPresentElement(element)) throw new Error("Requested Element doesn't exist");
-      return document.querySelector(elementString);
+    key: "isClassQuery",
+    value: function isClassQuery(query) {
+      return query.startsWith('.');
+    }
+  }, {
+    key: "isIdQuery",
+    value: function isIdQuery(query) {
+      return query.startsWith('#');
     }
   }]);
 
-  return _default;
+  return Html;
 }();
-
-exports.default = _default;
 },{}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
@@ -163,11 +180,10 @@ var _Html = _interopRequireDefault(require("./utils/Html/Html"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var html = new _Html.default(); // get context of thing to add html to
+// get context of thing to add html to
+var app = (0, _Html.default)('#app').getElement(); // build header element to add
 
-var app = html.selectExisting('#app'); // build header element to add
-
-var header = document.createElement('header');
+var header = (0, _Html.default)('header').getElement();
 header.classList.add('page-header'); // build h1 element to add
 
 var h1 = document.createElement('h1');
@@ -205,7 +221,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51993" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54376" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
