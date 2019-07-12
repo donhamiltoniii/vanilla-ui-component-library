@@ -1,65 +1,73 @@
 import Html from './Html.js'
 
 describe('Html', () => {
-  let html
 
-  beforeEach(() => {
-    html = new Html()
-  })
+  describe('constructor', () => {
 
-  describe('selectExisting', () => {
-
-    let appDiv
-
-    beforeEach(() => {
-      appDiv = document.createElement('div')
-      appDiv.id = 'app'
-      document.body.append(appDiv)
+    describe('should return new instance if none exists', () => {
+      test("should be an 'object'", () => {
+        expect(typeof Html('div')).toBe('object')
+      })
     })
 
-    afterEach(() => {
-      document.body.innerHTML = ''
+    describe('select an element', () => {
+
+      let elementToSelect
+
+      beforeEach(() => {
+        elementToSelect = document.createElement('div')
+        document.body.append(elementToSelect)
+      })
+
+      afterEach(() => {
+        document.body.innerHTML = ''
+      })
+
+      test('should contain instance of element', () => {
+        expect(Html('div').getElement()).toStrictEqual(elementToSelect)
+      })
+
+      test('should return error when invalid parameter passed', () => {
+        expect(() => Html(123)).toThrow('Argument must be a string')
+      })
+
     })
 
-    test('returns an object', () => {
-      expect(typeof html.selectExisting('#app')).toBe('object')
+    describe('select multiple elements when available', () => {
+
+      let divOne
+      let divTwo
+
+      beforeEach(() => {
+        divOne = document.createElement('div')
+        divTwo = document.createElement('div')
+
+        document.body.append(divOne)
+        document.body.append(divTwo)
+      })
+
+      afterEach(() => {
+        document.body.innerHTML = ''
+      })
+
+      test('returns array of elements', () => {
+        expect(Html('div').getElement()).toContain(divOne)
+        expect(Html('div').getElement()).toContain(divTwo)
+      })
+
     })
 
-    test('throws error when improper parameter is passed', () => {
-      expect(() => html.selectExisting(123)).toThrow('Method only accepts type string')
+    describe('should return a new instance of an element when none exists', () => {
+      test('makes new element', () => {
+        expect(Html('div').getElement() instanceof HTMLDivElement).toBeTruthy()
+      })
+
+      test('throw error when trying to make a new element if given a class or id', () => {
+        expect(() => Html('.thing')).toThrow('Element must be a valid HTML tag')
+        expect(() => Html('#thing')).toThrow('Element must be a valid HTML tag')
+      })
     })
 
-    test('returns requested object', () => {
-      expect(html.selectExisting('#app')).toStrictEqual(appDiv)
-    })
-
-    test(`throws error when element doesn't exist`, () => {
-      expect(() => html.selectExisting('video')).toThrow(`Requested Element doesn't exist`)
-    })
-  })
-
-  describe('create', () => {
-
-    test('returns an object', () => {
-      expect(typeof html.create('div')).toBe('object')
-    })
-
-    test('throws error when improper parameter is passed', () => {
-      expect(() => html.create(123)).toThrow('Method only accepts type string')
-    })
-
-    test('creates requested object', () => {
-      const underTest = html.create('div')
-      document.body.append(underTest)
-
-      const actual = html.selectExisting('div')
-
-      expect(actual).toStrictEqual(underTest)
-    })
-
-    test(`throws error when element doesn't exist`, () => {
-      expect(() => html.create('banana')).toThrow(`Must provide valid html element`)
-    })
   })
 
 })

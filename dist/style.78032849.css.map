@@ -1,1 +1,0 @@
-{"version":3,"sources":["css/style.css"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA","file":"style.78032849.css","sourceRoot":"../src","sourcesContent":["* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nhtml {\n  color: #333;\n  font: 20px/1 sans-serif;\n}"]}

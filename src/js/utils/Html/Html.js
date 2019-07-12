@@ -1,26 +1,32 @@
-export default class {
+export default function (query) {
+  return new Html(query)
+}
 
-  create(elementString) {
-    if (typeof elementString !== 'string') throw new Error('Method only accepts type string')
+class Html {
+  constructor(query) {
+    if (typeof query !== 'string') throw new Error('Argument must be a string')
 
-    const created = document.createElement(elementString)
-    if (created instanceof HTMLUnknownElement) throw new Error(`Must provide valid html element`)
+    const selection = document.querySelectorAll(query)
 
-    return created
+    if (selection.length === 0) {
+      if (this.isClassQuery(query) || this.isIdQuery(query)) throw new Error('Element must be a valid HTML tag')
+      this.element = document.createElement(query)
+    } else if (selection.length === 1) {
+      this.element = selection[0]
+    } else {
+      this.element = selection
+    }
   }
 
-  _isPresentElement(element) {
-    return element === null;
+  getElement() {
+    return this.element
   }
 
-  selectExisting(elementString) {
-    if (typeof elementString !== 'string') throw new Error('Method only accepts type string')
-
-    const element = document.querySelector(elementString);
-
-    if (this._isPresentElement(element)) throw new Error(`Requested Element doesn't exist`)
-
-    return element
+  isClassQuery(query) {
+    return query.startsWith('.');
   }
 
+  isIdQuery(query) {
+    return query.startsWith('#');
+  }
 }
