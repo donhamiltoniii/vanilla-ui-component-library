@@ -1,16 +1,17 @@
 import Html from './utils/Html/Html'
 
 // get context of thing to add html to
-const app = Html('#app').getElement()
+// const app = document.querySelector('#app')
+const app = Html('#app').render() // replaces previous
 
 // build header element to add
-const header = Html('header').getElement()
-header.classList.add('page-header')
+// const header = document.createElement('header')
+// header.classList.add('page-header')
+const header = Html('header').addClass('page-header').render() // replaces previous
 
 // build h1 element to add
-const h1 = document.createElement('h1')
-h1.classList.add('page-header__title')
-h1.textContent = "Hello World"
+// h1.textContent = "Hello World"
+const h1 = Html('h1').addClass('page-header__title').text('Hello World').render()
 
 // add 'h1' to 'header'
 header.append(h1)

@@ -18,8 +18,9 @@ class Html {
     }
   }
 
-  getElement() {
-    return this.element
+  addClass(classToAdd) {
+    this.element.classList.add(classToAdd)
+    return this
   }
 
   isClassQuery(query) {
@@ -28,5 +29,17 @@ class Html {
 
   isIdQuery(query) {
     return query.startsWith('#');
+  }
+
+  render() {
+    return this.element
+  }
+
+  text(message) {
+    if (message === undefined) {
+      return this.element.textContent
+    }
+    this.element.textContent = message
+    return this
   }
 }
