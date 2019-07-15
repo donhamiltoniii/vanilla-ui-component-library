@@ -24,7 +24,7 @@ describe('Html', () => {
       })
 
       test('should contain instance of element', () => {
-        expect(Html('div').getElement()).toStrictEqual(elementToSelect)
+        expect(Html('div').render()).toStrictEqual(elementToSelect)
       })
 
       test('should return error when invalid parameter passed', () => {
@@ -51,21 +51,72 @@ describe('Html', () => {
       })
 
       test('returns array of elements', () => {
-        expect(Html('div').getElement()).toContain(divOne)
-        expect(Html('div').getElement()).toContain(divTwo)
+        expect(Html('div').render()).toContain(divOne)
+        expect(Html('div').render()).toContain(divTwo)
       })
 
     })
 
     describe('should return a new instance of an element when none exists', () => {
       test('makes new element', () => {
-        expect(Html('div').getElement() instanceof HTMLDivElement).toBeTruthy()
+        expect(Html('div').render() instanceof HTMLDivElement).toBeTruthy()
       })
 
       test('throw error when trying to make a new element if given a class or id', () => {
         expect(() => Html('.thing')).toThrow('Element must be a valid HTML tag')
         expect(() => Html('#thing')).toThrow('Element must be a valid HTML tag')
       })
+    })
+
+  })
+
+  describe('addClass', () => {
+    test('Throws an error when class already exists', () => {
+      const underTest = Html('div')
+      underTest.render().classList.add('test')
+
+      expect(() => { underTest.addClass('test') }).toThrow('Class already exists on element.')
+    })
+
+    test('should add a class to an element', () => {
+      const underTest = Html('div')
+      underTest.addClass('test')
+
+      expect(underTest.render().classList.contains('test')).toBeTruthy()
+    })
+  })
+
+  describe('text', () => {
+    test('Return current value', () => {
+      const underTest = Html('div')
+      underTest.render().textContent = 'test content'
+
+      expect(underTest.text()).toBe('test content')
+    })
+
+    test('Sets value when given a parameter', () => {
+      const underTest = Html('div')
+      underTest.text('test content')
+
+      expect(underTest.text()).toBe('test content')
+    })
+  })
+
+  describe('addChild', () => {
+    test('Throws error if given an improper HTML element', () => {
+      const underTest = Html('div')
+      const elementToAdd = Html('Donny')
+      console.log(elementToAdd)
+
+      expect(() => underTest.addChild(elementToAdd)).toThrow('Invalid HTML tag')
+    })
+
+    test('Adds valid HTML element', () => {
+      const underTest = Html('div')
+      const elementToAdd = Html('span')
+      underTest.addChild(elementToAdd)
+
+      expect(underTest.render().querySelector('span')).toStrictEqual(elementToAdd.render())
     })
 
   })
