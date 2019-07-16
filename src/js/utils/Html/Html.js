@@ -18,6 +18,11 @@ class Html {
     }
   }
 
+  addChild(elementToAdd) {
+    this.element.append(elementToAdd)
+    return this
+  }
+
   addClass(classToAdd) {
     this.element.classList.add(classToAdd)
     return this

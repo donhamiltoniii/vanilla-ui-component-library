@@ -110,7 +110,9 @@ describe('Html', () => {
     test('adds child element', () => {
       const parent = Html('div')
       const child = Html('div')
-      parent.addChild()
+      parent.addChild(child.render())
+
+      expect(parent.render().querySelector('div')).toBe(child.render())
     })
   })
 
