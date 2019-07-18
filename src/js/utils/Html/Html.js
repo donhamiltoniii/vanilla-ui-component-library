@@ -51,6 +51,15 @@ class Html {
     return this;
   }
 
+  html(contentToAdd) {
+    if (contentToAdd === undefined) {
+      return this.element.innerHTML;
+    }
+    this.element.innerHTML = contentToAdd;
+
+    return this;
+  }
+
   _isClassQuery(query) {
     return query.startsWith(".");
   }
