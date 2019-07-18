@@ -1,23 +1,11 @@
 import Html from "./utils/Html/Html";
 import Api from "./utils/Api/Api";
 
-{
-  /* <header class="main-header">
-        <h1 class="main-header__title">Users and Books!</h1>
-        <nav class="nav">
-          <ul class="nav__list">
-            <li class="nav__list-item"><a href="users.html">Users</a></li>
-            <li class="nav__list-item"><a href="books.html">Books</a></li>
-          </ul>
-        </nav>
-      </header> */
-}
-
 export default function main() {
   // get context of thing to add html to
   const app = getAppContext();
   const wrapperDiv = getWrapperDiv();
-  const mainHeader = renderMainHeaderAndContents();
+  const mainHeader = renderMainHeader();
 
   wrapperDiv.addChild(mainHeader);
   app.addChild(wrapperDiv);
@@ -33,7 +21,7 @@ export default function main() {
   // });
 }
 
-function renderMainHeaderAndContents() {
+function renderMainHeader() {
   const mainHeader = Html("header").addClass("main-header");
   const mainHeaderTitle = Html("h1")
     .addClass("main-header__title")
@@ -68,7 +56,7 @@ function renderMainNav() {
 }
 
 function getWrapperDiv() {
-  return Html("body")
+  return Html()
     .create("div")
     .addClass("wrapper");
 }
