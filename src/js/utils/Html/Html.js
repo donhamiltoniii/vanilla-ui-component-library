@@ -46,6 +46,12 @@ class Html {
     return this;
   }
 
+  click(callback) {
+    this.element.addEventListener('click', callback)
+
+    return this
+  }
+
   create(elementType) {
     this.element = document.createElement(elementType);
     return this;

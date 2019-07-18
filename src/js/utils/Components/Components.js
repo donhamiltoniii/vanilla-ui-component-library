@@ -18,6 +18,7 @@ class Components {
         const contentBlock = Html('section').addClass('content-block');
         const contentBlockTitle = Html('h3').addClass('content-block__title').text('Books');
         const contentBlockList = Html().create('ul').addClass('content-block__list');
+        // This is how you dynamically render!!! YAY!!
         Api().getRequest('http://localhost:8080/api/books', (books) => {
             books.forEach((book) => {
                 const contentBlockListItem = Html()
@@ -69,8 +70,12 @@ class Components {
             .addClass("nav__list-item")
             .addChild(
                 Html("a")
-                    .addAttribute("href", "users.html")
+                    .addAttribute("href", "")
                     .text("Authors")
+                    .click((event) => {
+                        event.preventDefault()
+                        this.renderPageAuthors()
+                    })
             );
         const navListItemTwo = Html("li")
             .addClass("nav__list-item")
@@ -91,6 +96,18 @@ class Components {
         navList.addChild(navListItemThree);
         nav.addChild(navList);
         return nav;
+    }
+
+    renderPageAuthors() {
+        const app = this.getAppContext();
+        // const wrapperDiv = this.getWrapperDiv();
+        // // const mainHeader = this.renderMainHeader();
+        // const mainContent = this.renderMainContent();
+        // const mainFooter = this.renderMainFooter();
+        // // wrapperDiv.addChild(mainHeader);
+        // wrapperDiv.addChild(mainContent);
+        // wrapperDiv.addChild(mainFooter);
+        app.html('<h1>It work!</h1>');
     }
 
     renderPageHome() {
