@@ -3,25 +3,6 @@ export default function (query) {
 }
 
 class Html {
-  constructor(query) {
-    if (typeof query === "string") {
-
-      const selection = document.querySelectorAll(query);
-
-      if (selection.length === 0) {
-        if (this._isClassQuery(query) || this._isIdQuery(query))
-          throw new Error("Element must be a valid HTML tag");
-        this.element = document.createElement(query);
-      } else if (selection.length === 1) {
-        this.element = selection[0];
-      } else {
-        this.element = selection;
-      }
-    } else {
-      this.element = undefined
-    }
-  }
-
   addAttribute(attributeToSet, attributeValue) {
     this.element.setAttribute(attributeToSet, attributeValue);
 
