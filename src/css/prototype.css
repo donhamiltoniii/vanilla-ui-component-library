@@ -52,6 +52,7 @@ ul {
   color: var(--primary-color);
   font-size: 2.25rem;
   margin-bottom: 1rem;
+  text-transform: capitalize;
 }
 
 .main-content {

@@ -5,7 +5,7 @@ export default () => new Components()
 
 class Components {
     getAppContext() {
-        return Html("#app");
+        return Html().select("#app");
     }
 
     getWrapperDiv() {
@@ -14,20 +14,30 @@ class Components {
             .addClass("wrapper");
     }
 
-    renderContentBlock() {
+    renderContentBlock(requestedData) {
         const contentBlock = Html().create('section').addClass('content-block');
-        const contentBlockTitle = Html().create('h3').addClass('content-block__title').text('Books');
+        const contentBlockTitle = Html().create('h3').addClass('content-block__title').text(requestedData);
         const contentBlockList = Html().create('ul').addClass('content-block__list');
         // This is how you dynamically render!!! YAY!!
-        Api().getRequest('http://localhost:8080/api/books', (books) => {
-            books.forEach((book) => {
+        Api().getRequest(`http://localhost:8080/api/${requestedData}`, (responseCollection) => {
+            responseCollection.forEach((item) => {
+                let name
+
+                if (item.title) {
+                    name = item.title
+                } else if (item.firstName) {
+                    name = `${item.firstName} ${item.lastName}`
+                } else {
+                    name = item.location
+                }
+
                 const contentBlockListItem = Html()
                     .create('li')
                     .addClass('content-block__list-item')
                     .addChild(Html()
                         .create('a')
-                        .addAttribute('href', `/books/${book.id}`)
-                        .text(book.title));
+                        .addAttribute('href', `/${requestedData}/${item.id}`)
+                        .text(name));
                 contentBlockList.addChild(contentBlockListItem);
             });
         });
@@ -36,10 +46,10 @@ class Components {
         return contentBlock;
     }
 
-    renderMainContent() {
+    renderMainContent(requestedData) {
         const mainContent = Html().create('main').addClass('main-content');
         const containerDiv = Html().create('div').addClass('container');
-        const contentBlock = this.renderContentBlock();
+        const contentBlock = this.renderContentBlock(requestedData);
         containerDiv.addChild(contentBlock);
         mainContent.addChild(containerDiv);
         return mainContent;
@@ -70,26 +80,34 @@ class Components {
             .addClass("nav__list-item")
             .addChild(
                 Html().create("a")
-                .addAttribute("href", "")
-                .text("Authors")
-                .click((event) => {
-                    event.preventDefault()
-                    this.renderPageAuthors()
-                })
+                    .addAttribute("href", "")
+                    .text("Authors")
+                    .click((event) => {
+                        event.preventDefault()
+                        this.renderPageAuthors()
+                    })
             );
         const navListItemTwo = Html().create("li")
             .addClass("nav__list-item")
             .addChild(
                 Html().create("a")
-                .addAttribute("href", "books.html")
-                .text("Books")
+                    .addAttribute("href", "books.html")
+                    .text("Books")
+                    .click((event) => {
+                        event.preventDefault()
+                        this.renderPageBooks()
+                    })
             );
         const navListItemThree = Html().create("li")
             .addClass("nav__list-item")
             .addChild(
                 Html().create("a")
-                .addAttribute("href", "books.html")
-                .text("Campuses")
+                    .addAttribute("href", "books.html")
+                    .text("Campuses")
+                    .click((event) => {
+                        event.preventDefault()
+                        this.renderPageCampuses()
+                    })
             );
         navList.addChild(navListItemOne);
         navList.addChild(navListItemTwo);
@@ -99,27 +117,30 @@ class Components {
     }
 
     renderPageAuthors() {
-        const app = this.getAppContext();
-        const wrapperDiv = this.getWrapperDiv();
-        const mainHeader = this.renderMainHeader();
-        const mainContent = this.renderMainContent();
-        const mainFooter = this.renderMainFooter();
-        wrapperDiv.addChild(mainHeader);
-        wrapperDiv.addChild(mainContent);
-        wrapperDiv.addChild(mainFooter);
-        app.addChild(wrapperDiv);
+        const currentMainContentContainer = this.getWrapperDiv().select('.main-content').select('.container')
+        currentMainContentContainer.replace(this.renderContentBlock('authors'))
+    }
+
+    renderPageBooks() {
+        const currentMainContentContainer = this.getWrapperDiv().select('.main-content').select('.container')
+        currentMainContentContainer.replace(this.renderContentBlock('books'))
+    }
+
+    renderPageCampuses() {
+        const currentMainContentContainer = this.getWrapperDiv().select('.main-content').select('.container')
+        currentMainContentContainer.replace(this.renderContentBlock('campuses'))
     }
 
     renderPageHome() {
         const app = this.getAppContext();
         const wrapperDiv = this.getWrapperDiv();
         const mainHeader = this.renderMainHeader();
-        const mainContent = this.renderMainContent();
+        const mainContent = this.renderMainContent('books');
         const mainFooter = this.renderMainFooter();
         wrapperDiv.addChild(mainHeader);
         wrapperDiv.addChild(mainContent);
         wrapperDiv.addChild(mainFooter);
-        app.addChild(wrapperDiv);
+        app.replace(wrapperDiv);
     }
 
 }

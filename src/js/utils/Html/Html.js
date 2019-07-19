@@ -1,5 +1,5 @@
-export default function (query) {
-  return new Html(query);
+export default function () {
+  return new Html();
 }
 
 class Html {
@@ -57,6 +57,25 @@ class Html {
 
   render() {
     return this.element;
+  }
+
+  replace(element) {
+    this.element.innerHTML = ''
+    this.addChild(element)
+
+    return this
+  }
+
+  select(query) {
+    const selection = document.querySelectorAll(query)
+
+    if (selection.length === 1) {
+      this.element = selection[0]
+    } else {
+      this.element = selection
+    }
+
+    return this
   }
 
   text(textToAdd) {
