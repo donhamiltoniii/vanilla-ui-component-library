@@ -37,7 +37,15 @@ class Components {
                     .addChild(Html()
                         .create('a')
                         .addAttribute('href', `/${requestedData}/${item.id}`)
-                        .text(name));
+                        .text(name)
+                        .click((event) => {
+                            event.preventDefault()
+
+                            const endpoint = event.target.getAttribute('href')
+                            Api().getRequest(`http://localhost:8080/api${endpoint}`, (data) => {
+                                this.renderPageSingle(data, endpoint)
+                            })
+                        }));
                 contentBlockList.addChild(contentBlockListItem);
             });
         });
@@ -116,9 +124,44 @@ class Components {
         return nav;
     }
 
+    renderPageAuthor(data) {
+        const currentMainContentContainerContentBlock = this.getWrapperDiv().select('.main-content').select('.container').select('.content-block');
+        const authorName = Html().create('h3').addClass('content-block__title').text(data.firstName + ' ' + data.lastName);
+        currentMainContentContainerContentBlock.replace(authorName);
+    }
+
     renderPageAuthors() {
         const currentMainContentContainer = this.getWrapperDiv().select('.main-content').select('.container')
         currentMainContentContainer.replace(this.renderContentBlock('authors'))
+    }
+
+    renderPageBook(data) {
+        const currentMainContentContainerContentBlock = this.getWrapperDiv().select('.main-content').select('.container').select('.content-block');
+        const bookTitle = Html().create('h3').addClass('content-block__title').text(data.title);
+        const bookAuthors = Html().create('ul').addClass('authors');
+        data.authors.forEach(author => {
+            const authorElement = Html()
+                .create('li')
+                .addChild(
+                    Html()
+                        .create('a')
+                        .addAttribute('href', `/authors/${author.id}`)
+                        .text(author.firstName + ' ' + author.lastName)
+                        .click((event) => {
+                            event.preventDefault()
+
+                            const endpoint = event.target.getAttribute('href')
+                            Api().getRequest(`http://localhost:8080/api${endpoint}`, (data) => {
+                                this.renderPageSingle(data, endpoint)
+                            })
+                        })
+                );
+            bookAuthors.addChild(authorElement);
+        });
+        const bookCampus = Html().create('h4').addChild(Html().create('a').addAttribute('href', `/campuses/${data.campus.id}`).text(data.campus.location));
+        currentMainContentContainerContentBlock.replace(bookTitle);
+        currentMainContentContainerContentBlock.addChild(bookAuthors);
+        currentMainContentContainerContentBlock.addChild(bookCampus);
     }
 
     renderPageBooks() {
@@ -129,6 +172,21 @@ class Components {
     renderPageCampuses() {
         const currentMainContentContainer = this.getWrapperDiv().select('.main-content').select('.container')
         currentMainContentContainer.replace(this.renderContentBlock('campuses'))
+    }
+
+    renderPageSingle(data, endpoint) {
+        console.log(endpoint)
+        const typeOfObject = endpoint.split('/')[1]
+        console.log(typeOfObject)
+        if (typeOfObject === 'authors') {
+            this.renderPageAuthor(data);
+        }
+        if (typeOfObject === 'books') {
+            this.renderPageBook(data);
+        }
+        if (typeOfObject === 'campuses') {
+            this.renderPageCampus(data);
+        }
     }
 
     renderPageHome() {
