@@ -158,7 +158,14 @@ class Components {
                 );
             bookAuthors.addChild(authorElement);
         });
-        const bookCampus = Html().create('h4').addChild(Html().create('a').addAttribute('href', `/campuses/${data.campus.id}`).text(data.campus.location));
+        const bookCampus = Html().create('h4').addChild(Html().create('a').addAttribute('href', `/campuses/${data.campus.id}`).text(data.campus.location).click((event) => {
+            event.preventDefault()
+
+            const endpoint = event.target.getAttribute('href')
+            Api().getRequest(`http://localhost:8080/api${endpoint}`, (data) => {
+                this.renderPageSingle(data, endpoint)
+            })
+        }));
         currentMainContentContainerContentBlock.replace(bookTitle);
         currentMainContentContainerContentBlock.addChild(bookAuthors);
         currentMainContentContainerContentBlock.addChild(bookCampus);
@@ -167,6 +174,12 @@ class Components {
     renderPageBooks() {
         const currentMainContentContainer = this.getWrapperDiv().select('.main-content').select('.container')
         currentMainContentContainer.replace(this.renderContentBlock('books'))
+    }
+
+    renderPageCampus(data) {
+        const currentMainContentContainerContentBlock = this.getWrapperDiv().select('.main-content').select('.container').select('.content-block');
+        const campusLocation = Html().create('h3').addClass('content-block__title').text(data.location);
+        currentMainContentContainerContentBlock.replace(campusLocation);
     }
 
     renderPageCampuses() {
