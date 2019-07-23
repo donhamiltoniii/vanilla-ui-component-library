@@ -26,5 +26,6 @@
     "@babel/preset-env": "^7.5.4",
     "babel-jest": "^24.8.0",
     "jest": "^24.8.0"
-  }
+  },
+  "proxy": "http://localhost:8080"
 }
