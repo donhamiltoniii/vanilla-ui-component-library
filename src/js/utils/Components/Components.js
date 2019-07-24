@@ -207,12 +207,9 @@ class Components {
     campusAddButton.click((event) => {
       const newLocation = campusAddLocation.render().value
 
-      console.log(newLocation)
-
       Api().postRequest('http://localhost:8080/api/campuses', {
         location: newLocation
       }, (campuses) => {
-        console.log('received campuses:', campuses)
         this.renderPageCampuses()
       })
     })

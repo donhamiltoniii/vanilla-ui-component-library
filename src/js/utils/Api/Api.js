@@ -20,7 +20,7 @@ class Api {
       body: JSON.stringify(requestBody)
     })
       .then(response => response.json())
-      .then((res) => callback(res))
+      .then(callback)
       .catch(err => console.log(err));
   }
 }
